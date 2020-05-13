@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>ShareVocabulary</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
@@ -29,6 +29,10 @@
     <!-- Some Custom Style -->
     <style>
         body { text-align: center; margin-top: 50px;}
+    </style>
+
+    <style>
+        body { text-align: center; margin-top: 50px;}
 
         .table th{
             background-color: lightsalmon;
@@ -40,59 +44,45 @@
 
 </head>
 <body>
-
-
-
 <div th:remove="tag">
 
-    <!-- Align Heading Welcome Message -->
-    <h1 style="display: inline">Welcome </h1>
-    <h1 style="display: inline; color: lightpink; font-weight: bold" th:text="${current_user}"></h1>
-
     <br>
     <br>
 
-    <h2>Overview of your Vocabularies</h2>
+    <h2>Check Boxes to select vocabularys.</h2>
     <h4>Filter:</h4>
-    <div class="container" style="width: 5%; height: 120%" >
-        <form>
-            <div class="form-group">
-                <select class="form-control" id="sel1">
-                    <option>All</option>
-                    <option>Verb</option>
-                    <option>Noun</option>
-                    <option>Adjectiv</option>
-                </select>
-            </div>
-        </form>
-    </div>
     <div class="container">
         <input class="form-control" id="myInput" type="text" placeholder="Search..">
     </div>
-
     <br>
     <div class="container">
-        <table  class="table table-striped" data-toggle="table">
+        <table class="table table-striped" data-toggle="table">
+
             <thead>
             <tr>
+
                 <th  data-sortable="true">German Vocabulary</th>
-                <th  data-sortable="true">English Translation</th>
-                <th  data-sortable="true">Rating</th>
-                <th  data-sortable="true">Tag</th>
+                <th  data-sortable="true">English Vocabulary</th>
+                <th  data-sortable="true">Share</th>
             </tr>
             </thead>
             <!-- Iterate through all entries using th:each -->
             <tbody id="myTable">
             <th:block th:each="entry : ${overview}">
-                <tr >
+
+                <tr>
                     <td ><span th:text="${entry.german_word}"></span></td>
                     <td ><span  th:text="${entry.engl_trans}"></span></td>
-                    <td ><a th:data-sortby="${entry.rating}" type="button" class="btn btn-info btn-sm" th:href="@{/user/edit_rating/edit/{ID}  (ID=${entry.id})} " role="button">
-                        <span th:text="${entry.rating}"> </span>
-                    </a>
-                    </td>
-                    <td > <a th:data-sortby="${entry.tag}" type="button" class="btn btn-info btn-sm" th:href="@{/user/edit_tag/edit/{ID}  (ID=${entry.id})} " role="button"> <span th:text="${entry.tag}"> </span>
-                        </a>
+
+
+                    <td > <div class="custom-control custom-checkbox mb-3">
+                        <input type="checkbox" class="custom-control-input" th:id="${entry.id}" th:name="${entry.id}">
+                        <label class="custom-control-label" th:for="${entry.id}"></label>
+                    </div>
+
+
+                       <!-- <a th:data-sortby="${entry}" type="button" class="btn btn-info btn-sm" th:href="@{/user/edit_tag/edit/{ID}  (ID=${entry.id})} " role="button"> append </span>
+                    </a> -->
                     </td>
 
                 </tr>
@@ -101,19 +91,10 @@
         </table>
     </div>
 
-    <h3>Add Vocabulary</h3>
-    <a href="/user/addvoc">Add vocabulary</a>
 
-    <p><a href="/user/editvoc">Edit Vocabulary</a></p>
-
-    <p><a href="/user/studyInterface">Study Interface</a></p>
-
-    <p><a href="/user/shareVocabulary">Share Vocabulary</a></p>
-
-    <p><a href="/logout">Logout</a></p>
+    <p><a href="/user">back</a></p>
 
 </div>
-</body>
 
 <script>
 
@@ -127,6 +108,18 @@
             });
         });
     });
+
+
+    $('#exampleModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var engl = button.data('english') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+
+        modal.find('.modal-body input').val(engl)
+
+    })
 
     $(document).ready(function(){
 
@@ -153,4 +146,5 @@
 
 </script>
 
+</body>
 </html>

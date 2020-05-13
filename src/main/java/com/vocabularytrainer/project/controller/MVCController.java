@@ -49,6 +49,22 @@ public class MVCController {
         return "user/index";
     }
 
+    /* User share Vocabulary */
+    @GetMapping("/user/shareVocabulary")
+    public String userShareVocabulary(Model model) {
+
+        // tell the thymeleaf which user is logged in
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        model.addAttribute("current_user", userDetails.getUsername());
+
+        // get the Query to show current vocabulary entries of user x
+        model.addAttribute("overview", this.vocabularyRepository.showAllVocabularyFromUserX(userDetails.getUsername()));
+
+        return "user/share_Vocabulary";
+    }
+
     /* User StudyInterface in German*/
     @GetMapping("/user/studyInterfaceGerman")
     public String userStudyInterfaceGerman(Model model) {
