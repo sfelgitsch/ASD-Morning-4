@@ -149,7 +149,10 @@ public class MVCController {
     public String submitEditedVocabularyEntry(@PathVariable(name = "id") int id, VocabularyEntries vocabularyEntries, Model model)
     {
         model.addAttribute("submitted", true);
-
+        if(vocabularyEntries.getGerman_word().length() == 0 || vocabularyEntries.getGerman_word().length() >= 50|| vocabularyEntries.getEngl_trans().length() == 0 || vocabularyEntries.getEngl_trans().length() >= 50)
+        {
+            return "access-denied-page";
+        }
         // get current user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -206,6 +209,10 @@ public class MVCController {
     public String submitUserAddVocabulary(VocabularyEntries vocabularyEntries, Model model) {
 
         model.addAttribute("submitted", true);
+        if(vocabularyEntries.getGerman_word().length() == 0 || vocabularyEntries.getGerman_word().length() >= 50|| vocabularyEntries.getEngl_trans().length() == 0 || vocabularyEntries.getEngl_trans().length() >= 50)
+        {
+            return "access-denied-page";
+        }
 
         // get current user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -253,7 +260,10 @@ public class MVCController {
     public String submitEditedTagEntry(@PathVariable(name = "id") int id, VocabularyEntries vocabularyEntries, Model model)
     {
         model.addAttribute("submitted", true);
-
+        if (vocabularyEntries.getTag().length() > 10 || vocabularyEntries.getTag().length() == 0)
+        {
+            return "access-denied-page";
+        }
         // get current user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -265,8 +275,8 @@ public class MVCController {
 
         // Thymeleaf-variable for "post-form" - add it
         model.addAttribute("edit_tag", result);
-
         return "user/edit_tag";
+
     }
 
     @GetMapping("user/edit_rating/edit/{id}")
